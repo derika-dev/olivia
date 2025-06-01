@@ -18,7 +18,7 @@ class CropAreas extends Model
      *
      * @var array
      */
-    protected $fillable = ['crop_id', 'province_id', 'area'];
+    protected $fillable = ['crop_id', 'province_id', 'area', 'year'];
 
     /**
      * Get the crop associated with the crop area.

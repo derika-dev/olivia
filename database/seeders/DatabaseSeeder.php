@@ -22,13 +22,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(DiseaseSeeder::class);
-
-        $this->call(UseSeeder::class);
-
-        $this->call(ProvinceSeeder::class);
-
-        $this->call(CropAreaSeeder::class);
+        $this->call([
+            DiseaseSeeder::class,
+            UseSeeder::class,
+            CropSeeder::class,      // <-- Tambahkan ini
+            ProvinceSeeder::class,
+            CropAreaSeeder::class,
+            PlantSeeder::class,
+            PlantPotensionProviceSeeder::class,
+        ]);
     }
 
     

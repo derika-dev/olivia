@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Provinces;
+use Illuminate\Support\Arr;
 
 class ProvinceSeeder extends Seeder
 {
@@ -13,6 +13,14 @@ class ProvinceSeeder extends Seeder
      */
     public function run(): void
     {
+        $soilTypes = [
+            'images/Black_Soil.jpg',
+            'images/Cinder_Soil.jpg',
+            'images/Laterite_Soil.jpg',
+            'images/Peat_Soil.jpg',
+            'images/Yellow_Soil.jpg',
+        ];
+
         $provinces = [
             ['id' => 1, 'name' => 'ACEH', 'latitude' => 4.695135, 'longitude' => 96.749399],
             ['id' => 2, 'name' => 'SUMATERA UTARA', 'latitude' => 2.115354, 'longitude' => 99.545097],
@@ -57,6 +65,7 @@ class ProvinceSeeder extends Seeder
                     'name' => $province['name'],
                     'latitude' => $province['latitude'],
                     'longitude' => $province['longitude'],
+                    'soil' => Arr::random($soilTypes),
                 ]
             );
         }

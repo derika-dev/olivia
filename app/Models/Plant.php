@@ -18,4 +18,9 @@ class Plant extends Model
     {
         return $this->belongsTo(PlantRecomendation::class);
     }
+
+    public function plantPotensionProvinces()
+    {
+        return $this->hasMany(PlantPotensionProvice::class);
+    }
 }

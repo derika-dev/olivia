@@ -18,7 +18,7 @@ class Provinces extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'latitude', 'longitude', 'soil'];
 
     /**
      * Get the crop areas associated with the province.
@@ -26,5 +26,13 @@ class Provinces extends Model
     public function cropAreas()
     {
         return $this->hasMany(CropAreas::class);
+    }
+
+    /**
+     * Get the plant potensions associated with the province.
+     */
+    public function plantPotensions()
+    {
+        return $this->hasMany(PlantPotensionProvice::class);
     }
 }
