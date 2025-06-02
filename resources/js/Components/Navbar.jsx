@@ -7,7 +7,8 @@ import ProfileOpen from './ProfileOpen';
 export default function Navbar({ auth }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Tambahkan ini
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('beranda');
   const profileRef = useRef();
 
   function handleLogout() {
@@ -17,6 +18,31 @@ export default function Navbar({ auth }) {
       },
     });
   }
+
+  // Scrollspy logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        { id: 'beranda', offset: 0 },
+        { id: 'tentang-kami', offset: document.getElementById('tentang-kami')?.offsetTop || 0 },
+        { id: 'fitur', offset: document.getElementById('fitur')?.offsetTop || 0 },
+        { id: 'kontak', offset: document.getElementById('kontak')?.offsetTop || 0 },
+      ];
+      const scrollPosition = window.scrollY + 100;
+
+      let current = 'beranda';
+      for (let i = 0; i < sections.length; i++) {
+        if (scrollPosition >= sections[i].offset) {
+          current = sections[i].id;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -30,15 +56,19 @@ export default function Navbar({ auth }) {
     };
   }, []);
 
+  // Helper for active class
+  const navLinkClass = (section) =>
+    `px-2 py-1 transition ${
+      activeSection === section ? 'text-[#FFFA72] font-bold underline underline-offset-8' : ''
+    }`;
+
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-[#355C00] text-white font-poppins relative z-50">
-      {/* Logo */}
+    <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 bg-[#355C00] text-white font-poppins shadow-lg z-50 transition-all duration-300">
       <div className="flex items-center space-x-3">
         <img src="/Images/logo-Agro.png" alt="Logo Agro" className="w-12 h-12 object-contain border-2 bg-white rounded-full" />
-        <span className="font-bold text-lg">TaniCerdas</span>
+        <span className="font-bold font-livvic text-[#FFFA72] text-xl">TaniCerdas</span>
       </div>
 
-      {/* Tombol Hamburger */}
       <button
         className="md:hidden block focus:outline-none"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -51,25 +81,48 @@ export default function Navbar({ auth }) {
 
       {/* Navigasi Desktop */}
       <ul className="md:flex hidden space-x-8 items-center font-semibold text-sm">
-        {/* Pindahkan isi <ul> lama di sini */}
         <li className="relative">
-          <a href="#" className="hover:underline">Beranda</a>
-          <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-[#FFFA72] block"></span>
+          <a
+            href="#"
+            className={navLinkClass('beranda')}
+            onClick={e => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setActiveSection('beranda');
+            }}
+          >
+            Beranda
+          </a>
+          {activeSection === 'beranda' && (
+            <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-[#FFFA72] block"></span>
+          )}
         </li>
         <li>
-          <button onClick={() => document.getElementById('tentang-kami')?.scrollIntoView({ behavior: 'smooth' })}>
+          <button
+            className={navLinkClass('tentang-kami')}
+            onClick={() => {
+              document.getElementById('tentang-kami')?.scrollIntoView({ behavior: 'smooth' });
+              setActiveSection('tentang-kami');
+            }}
+          >
             Tentang Kami
           </button>
         </li>
         <li>
-          <button onClick={() => document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' })}>
+          <button
+            className={navLinkClass('kontak')}
+            onClick={() => {
+              document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' });
+              setActiveSection('kontak');
+            }}
+          >
             Kontak
           </button>
         </li>
         <li className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="text-[#FFFA72] font-bold flex items-center gap-1"
+            className={`text-[#FFFA72] font-bold flex items-center gap-1 ${activeSection === 'fitur' ? 'underline underline-offset-8' : ''}`}
           >
             #TanamAku
             <svg
@@ -112,21 +165,46 @@ export default function Navbar({ auth }) {
         <div className="md:hidden absolute top-full left-0 w-full bg-[#355C00] text-white shadow-lg z-40">
           <ul className="flex flex-col space-y-2 py-4 px-6 font-semibold text-base">
             <li>
-              <a href="#" className="block py-2" onClick={() => setMobileMenuOpen(false)}>Beranda</a>
+              <a
+                href="#"
+                className={navLinkClass('beranda')}
+                onClick={e => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                  setActiveSection('beranda');
+                }}
+              >
+                Beranda
+              </a>
             </li>
             <li>
-              <button className="block py-2 w-full text-left" onClick={() => {document.getElementById('tentang-kami')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false);}}>
+              <button
+                className={navLinkClass('tentang-kami')}
+                onClick={() => {
+                  document.getElementById('tentang-kami')?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                  setActiveSection('tentang-kami');
+                }}
+              >
                 Tentang Kami
               </button>
             </li>
             <li>
-              <button className="block py-2 w-full text-left" onClick={() => {document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false);}}>
+              <button
+                className={navLinkClass('kontak')}
+                onClick={() => {
+                  document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' });
+                  setMobileMenuOpen(false);
+                  setActiveSection('kontak');
+                }}
+              >
                 Kontak
               </button>
             </li>
             <li>
               <details>
-                <summary className="py-2 cursor-pointer text-[#FFFA72] font-bold">#TanamAku</summary>
+                <summary className={`py-2 cursor-pointer text-[#FFFA72] font-bold ${activeSection === 'fitur' ? 'underline underline-offset-8' : ''}`}>#TanamAku</summary>
                 <ul className="pl-4">
                   <li>
                     <a href="/analisis-potensi-tanaman" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
@@ -175,7 +253,7 @@ export default function Navbar({ auth }) {
             </li>
           </ul>
         </div>
-      )}
+      )}  
 
       {/* Profil / Auth Aksi Desktop */}
       <div className="relative md:block hidden" ref={profileRef}>
