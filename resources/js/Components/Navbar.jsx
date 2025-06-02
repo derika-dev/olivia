@@ -7,6 +7,7 @@ import ProfileOpen from './ProfileOpen';
 export default function Navbar({ auth }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Tambahkan ini
   const profileRef = useRef();
 
   function handleLogout() {
@@ -17,7 +18,6 @@ export default function Navbar({ auth }) {
     });
   }
 
-  // Tutup dropdown profil jika klik di luar elemen
   useEffect(() => {
     function handleClickOutside(event) {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -38,8 +38,20 @@ export default function Navbar({ auth }) {
         <span className="font-bold text-lg">TaniCerdas</span>
       </div>
 
-      {/* Navigasi */}
-      <ul className="flex space-x-8 items-center font-semibold text-sm">
+      {/* Tombol Hamburger */}
+      <button
+        className="md:hidden block focus:outline-none"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        aria-label="Buka menu"
+      >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+        </svg>
+      </button>
+
+      {/* Navigasi Desktop */}
+      <ul className="md:flex hidden space-x-8 items-center font-semibold text-sm">
+        {/* Pindahkan isi <ul> lama di sini */}
         <li className="relative">
           <a href="#" className="hover:underline">Beranda</a>
           <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-[#FFFA72] block"></span>
@@ -72,7 +84,6 @@ export default function Navbar({ auth }) {
               />
             </svg>
           </button>
-
           {/* Dropdown menu */}
           {dropdownOpen && (
             <ul className="absolute font-poppins left-0 mt-2 w-64 bg-white text-black rounded-md shadow-lg z-10">
@@ -96,8 +107,78 @@ export default function Navbar({ auth }) {
         </li>
       </ul>
 
-      {/* Profil / Auth Aksi */}
-      <div className="relative" ref={profileRef}>
+      {/* Navigasi Mobile */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-[#355C00] text-white shadow-lg z-40">
+          <ul className="flex flex-col space-y-2 py-4 px-6 font-semibold text-base">
+            <li>
+              <a href="#" className="block py-2" onClick={() => setMobileMenuOpen(false)}>Beranda</a>
+            </li>
+            <li>
+              <button className="block py-2 w-full text-left" onClick={() => {document.getElementById('tentang-kami')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false);}}>
+                Tentang Kami
+              </button>
+            </li>
+            <li>
+              <button className="block py-2 w-full text-left" onClick={() => {document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false);}}>
+                Kontak
+              </button>
+            </li>
+            <li>
+              <details>
+                <summary className="py-2 cursor-pointer text-[#FFFA72] font-bold">#TanamAku</summary>
+                <ul className="pl-4">
+                  <li>
+                    <a href="/analisis-potensi-tanaman" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
+                      Analisis potensi tanaman
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/analisis-penyakit-tanaman" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
+                      Deteksi penyakit tanaman
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/peta-komoditas-pertanian" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
+                      Peta Komoditas Pertanian
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              {auth?.user ? (
+                <button
+                  className="block py-2 w-full text-left"
+                  onClick={() => { Inertia.visit('/profile'); setMobileMenuOpen(false); }}
+                >
+                  Profil
+                </button>
+              ) : (
+                <div className="flex flex-col space-y-2">
+                  <a
+                    href={route('register')}
+                    className="border border-white text-white px-4 py-2 rounded-md hover:bg-white hover:text-[#FFFA72] transition"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Daftar
+                  </a>
+                  <a
+                    href={route('login')}
+                    className="bg-[#FFFA72] text-black px-4 py-2 rounded-md font-semibold hover:opacity-90 transition"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Masuk
+                  </a>
+                </div>
+              )}
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Profil / Auth Aksi Desktop */}
+      <div className="relative md:block hidden" ref={profileRef}>
         {auth?.user ? (
           <div>
             <button

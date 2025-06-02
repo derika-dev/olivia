@@ -67,6 +67,7 @@ const KomoditasPertanian = () => {
     setSearch(value);
 
     if (value.length > 0 && markers.length > 0) {
+      // Cari marker berdasarkan komoditas atau daerah
       const found = markers.find(
         (item) =>
           item.komoditas.toLowerCase().includes(value.toLowerCase()) ||
@@ -157,7 +158,7 @@ const KomoditasPertanian = () => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
         <h1 className="font-livvic font-bold text-4xl md:text-[35px] leading-tight text-[#FFFA72]">
-          Analisis Potensi Tanaman
+          Peta Komoditas Pertanian
         </h1>
       </div>
 
