@@ -188,7 +188,6 @@ export default function Analisys({ auth }) {
       className="min-h-screen p-6 space-y-8"
       style={{ backgroundColor: '#325700', color: 'white' }}
     >
-      {/* Judul dan Tombol Kembali */}
       <BackHeader onBack={handleBack} title="Analisis Potensi Tanaman" />
 
       {/* Layout 2 kolom */}
