@@ -4,7 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Provinces;
 use App\Models\User;
+use Database\Seeders\CropArea\CropId1AreaSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\CropArea\CropId2AreaSeeder;
+use Database\Seeders\CropArea\CropId3AreaSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\DiseaseSeeder;
 use Database\Seeders\UseSeeder;
@@ -27,9 +30,9 @@ class DatabaseSeeder extends Seeder
             UseSeeder::class,
             CropSeeder::class,      // <-- Tambahkan ini
             ProvinceSeeder::class,
-            CropAreaSeeder::class,
-            PlantSeeder::class,
-            PlantPotensionProviceSeeder::class,
+            CropId1AreaSeeder::class,
+            CropId2AreaSeeder::class,
+            CropId3AreaSeeder::class,
         ]);
     }
 

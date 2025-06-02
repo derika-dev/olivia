@@ -35,12 +35,26 @@ const KomoditasPertanian = () => {
   const [soilResult, setSoilResult] = useState(null);
   const [soilLoading, setSoilLoading] = useState(false);
   const [soilError, setSoilError] = useState('');
+  const [allData, setAllData] = useState([]); // simpan semua data marker
+  const [selectedYear, setSelectedYear] = useState(''); // tahun yang dipilih
 
   React.useEffect(() => {
     setLoading(true);
     fetch('/api/crop_area/marker')
       .then(res => res.json())
       .then(data => {
+        setAllData(data); // simpan data asli
+        // Ambil semua tahun unik
+        const years = [];
+        data.forEach(prov => {
+          prov.years.forEach(y => {
+            if (y.year && !years.includes(y.year)) years.push(y.year);
+          });
+        });
+        years.sort();
+        // Set default tahun ke kosong (semua tahun)
+        setSelectedYear('');
+        // Mapping marker awal (semua tahun)
         const result = [];
         data.forEach((prov) => {
           prov.years.forEach((yearObj) => {
@@ -58,9 +72,39 @@ const KomoditasPertanian = () => {
           });
         });
         setMarkers(result);
+        setAvailableYears(years);
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Tambahkan state untuk daftar tahun
+  const [availableYears, setAvailableYears] = useState([]);
+
+  // Handler saat user memilih tahun
+  const handleYearChange = (e) => {
+    const year = e.target.value;
+    setSelectedYear(year);
+    // Filter marker sesuai tahun
+    const result = [];
+    allData.forEach((prov) => {
+      prov.years.forEach((yearObj) => {
+        if (!year || yearObj.year === year) {
+          yearObj.crops.forEach((crop, idx) => {
+            result.push({
+              id: `${prov.province}-${yearObj.year}-${crop.crop}-${idx}`,
+              posisi: [prov.latitude, prov.longitude],
+              komoditas: crop.crop,
+              daerah: prov.province,
+              year: yearObj.year,
+              area: crop.area,
+              soil_image: prov.soil_image,
+            });
+          });
+        }
+      });
+    });
+    setMarkers(result);
+  };
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -163,6 +207,21 @@ const KomoditasPertanian = () => {
       </div>
 
       <div className="w-full max-w-6xl">
+        {/* Dropdown filter tahun */}
+        <div className="mb-4 flex items-center gap-2">
+          <label htmlFor="year" className="text-white font-semibold">Filter Tahun:</label>
+          <select
+            id="year"
+            value={selectedYear}
+            onChange={handleYearChange}
+            className="rounded px-2 py-1"
+          >
+            <option value="">Semua Tahun</option>
+            {availableYears.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+        </div>
         <div className="map-container relative">
           <MapContainer center={[-7.230, 110.390]} zoom={13} scrollWheelZoom={true} className="leaflet-map">
             <TileLayer
@@ -178,10 +237,18 @@ const KomoditasPertanian = () => {
                 eventHandlers={{ click: () => handleMarkerClick(lokasi) }}
               >
                 <Popup>
-                  <strong>{lokasi.komoditas}</strong><br />
-                  <span>{lokasi.daerah}</span><br />
+                  <strong>{lokasi.daerah}</strong><br />
                   Tahun: {lokasi.year}<br />
-                  Area: {lokasi.area}<br />
+                  <span className="font-semibold">Komoditas & Area:</span>
+                  <ul className="list-disc ml-4">
+                    {markers
+                      .filter(m => m.daerah === lokasi.daerah && m.year === lokasi.year)
+                      .map((m, idx) => (
+                        <li key={idx}>
+                          {m.komoditas} : {m.area}
+                        </li>
+                      ))}
+                  </ul>
                   {lokasi.soil_image && (
                     <>
                       <img src={lokasi.soil_image} alt="Soil" style={{ width: 80, borderRadius: 8 }} /><br />

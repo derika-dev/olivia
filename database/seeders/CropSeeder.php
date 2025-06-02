@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Crops;
-
 
 class CropSeeder extends Seeder
 {
@@ -14,7 +12,7 @@ class CropSeeder extends Seeder
      */
     public function run(): void
     {
-         $crops = [
+        $crops = [
             ['id' => 1, 'name' => 'Kelapa Sawit', 'type' => 'Perkebunan'],
             ['id' => 2, 'name' => 'Kelapa', 'type' => 'Perkebunan'],
             ['id' => 3, 'name' => 'Karet', 'type' => 'Perkebunan'],
