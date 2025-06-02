@@ -9,17 +9,29 @@ use Illuminate\Support\Facades\Log;
 
 class MarkerController extends Controller
 {
-    public function marker(){
-        $cropAreas = \App\Models\CropAreas::with(['crop', 'province'])->get();
+    public function marker(Request $request)
+    {
+        $yearFilter = $request->query('year');
+
+        $query = \App\Models\CropAreas::with(['crop', 'province']);
+        if ($yearFilter) {
+            $query->where('year', $yearFilter);
+        }
+        $cropAreas = $query->get();
 
         $result = [];
         foreach ($cropAreas as $cropArea) {
+            // Lewati jika year null
+            if (is_null($cropArea->year)) continue;
+
+            // Lewati jika area 0 atau null
+            if (floatval($cropArea->area) == 0) continue;
+
             $provinceName = $cropArea->province->name;
-            $year = $cropArea->year ?? 'Tanpa Tahun'; // Pastikan ada field year di tabel crop_areas
+            $year = $cropArea->year;
 
             if (!isset($result[$provinceName])) {
                 $soilPath = $cropArea->province->soil;
-                // Gabungkan domain dengan path jika belum ada http/https
                 if ($soilPath && !preg_match('/^https?:\/\//', $soilPath)) {
                     $soilPath = request()->getSchemeAndHttpHost() . '/' . ltrim($soilPath, '/');
                 }
@@ -30,7 +42,7 @@ class MarkerController extends Controller
                     'soil_image' => $soilPath,
                     'years' => [],
                 ];
-            } 
+            }
 
             if (!isset($result[$provinceName]['years'][$year])) {
                 $result[$provinceName]['years'][$year] = [
@@ -41,7 +53,7 @@ class MarkerController extends Controller
 
             $result[$provinceName]['years'][$year]['crops'][] = [
                 'crop' => $cropArea->crop->name,
-                'area' => $cropArea->area,
+                'area' => number_format($cropArea->area, 2),
             ];
         }
 

@@ -56,6 +56,10 @@ class ProvinceSeeder extends Seeder
             ['id' => 32, 'name' => 'MALUKU UTARA', 'latitude' => 1.570999, 'longitude' => 127.808769],
             ['id' => 33, 'name' => 'PAPUA BARAT', 'latitude' => -1.336115, 'longitude' => 133.174716],
             ['id' => 34, 'name' => 'PAPUA', 'latitude' => -4.269928, 'longitude' => 138.080352],
+            ['id' => 35, 'name' => 'PAPUA BARAT DAYA', 'latitude' => -1.0, 'longitude' => 132.0],
+            ['id' => 36, 'name' => 'PAPUA SELATAN', 'latitude' => -6.0, 'longitude' => 140.0],
+            ['id' => 37, 'name' => 'PAPUA TENGAH', 'latitude' => -3.5, 'longitude' => 137.0],
+            ['id' => 38, 'name' => 'PAPUA PEGUNUNGAN', 'latitude' => -4.5, 'longitude' => 138.5],
         ];
 
         foreach ($provinces as $province) {

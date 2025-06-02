@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Provinces extends Model
 {
     /**
@@ -28,11 +29,4 @@ class Provinces extends Model
         return $this->hasMany(CropAreas::class);
     }
 
-    /**
-     * Get the plant potensions associated with the province.
-     */
-    public function plantPotensions()
-    {
-        return $this->hasMany(PlantPotensionProvice::class);
-    }
 }

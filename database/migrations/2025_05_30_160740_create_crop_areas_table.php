@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('province_id')
                 ->constrained('provinces')
                 ->onDelete('cascade');
-            $table->decimal('area', 10, 2)->default(0.00);
+            $table->decimal('area', 10, 2)->nullable();
             $table->decimal('year', 4, 0)->default(0);
             $table->timestamps();
         });
