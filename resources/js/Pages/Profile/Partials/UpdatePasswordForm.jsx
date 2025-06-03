@@ -100,7 +100,7 @@ export default function UpdatePasswordForm({ className = '' }) {
             <div className="text-right font-livvic">
                 <PrimaryButton
                     disabled={processing}
-                    className="bg-[#FFF264] text-[#2B5400] !font-livvic font-bold py-2 px-6 rounded-lg shadow hover:bg-yellow-300 transition"
+                    className="bg-[#FFF264] text-[#2B5400] font-livvic font-bold py-2 px-6 rounded-lg shadow hover:bg-yellow-300 transition"
                 >
                     Ubah
                 </PrimaryButton>
