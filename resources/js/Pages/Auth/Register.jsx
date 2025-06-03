@@ -23,12 +23,13 @@ export default function Register() {
     return (
         <>
             <Head title="Register" />
-
             <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 font-poppins">
-                <div className="flex flex-col md:flex-row w-full max-w-3xl bg-white rounded-lg overflow-hidden shadow-lg min-h-[550px]">
-
-                    {/* Form Register */}
-                    <div className="w-full md:w-1/2 p-10 flex flex-col justify-center min-w-[350px]">
+                <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg overflow-hidden shadow-lg min-h-[420px]">
+                    <div className="w-full md:w-1/2 p-8 flex flex-col justify-center min-w-[320px]">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <img src="/Images/logo-Agro.png" alt="Logo Agro" className="w-12 h-12 object-contain border-2 bg-white rounded-full" />
+                            <span className="font-bold font-livvic text-[#325700] text-xl">TaniCerdas</span>
+                        </div>
                         <h1 className="text-4xl font-livvic font-bold mb-2">Daftar</h1>
                         <p className="text-gray-600 mb-6 text-base">
                             Silakan daftar untuk membuat akun baru
