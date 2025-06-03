@@ -36,7 +36,7 @@ function AnalysisDisease({ file, user_id, onRestart }) {
     <div className="flex flex-col items-center justify-center min-h-[300px]">
       <div className="relative flex items-center justify-center mb-4">
         <span className="absolute inline-flex h-16 w-16 rounded-full bg-[#FDF76D] opacity-30 animate-ping"></span>
-        <span className="relative inline-flex rounded-full h-16 w-16 bg-[#FDF76D] flex items-center justify-center">
+        <span className="relative rounded-full h-16 w-16 bg-[#FDF76D] flex items-center justify-center">
           <svg className="w-8 h-8 text-[#325700] animate-spin" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-30" cx="12" cy="12" r="10" stroke="#325700" strokeWidth="4" />
             <path className="opacity-80" fill="#325700" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
