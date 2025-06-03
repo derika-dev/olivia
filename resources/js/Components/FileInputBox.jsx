@@ -7,6 +7,7 @@ export default function FileInputBox({ file, setFile, setPreviewUrl }) {
                 id="upload"
                 type="file"
                 accept="image/*"
+                capture="environment"
                 onChange={e => {
                     const uploadedFile = e.target.files[0];
                     if (uploadedFile) {

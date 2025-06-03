@@ -75,6 +75,23 @@ export default function Analisys({ auth }) {
     return () => clearTimeout(debounceRef.current);
   }, [location]);
 
+  // Ambil lokasi pengguna saat pertama kali komponen dimount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setCoords([latitude, longitude]);
+          // Dapatkan alamat dari koordinat
+          const address = await reverseGeocode(latitude, longitude);
+          setLocation(address);
+        },
+        (error) => {
+        }
+      );
+    }
+  }, []);
+
   const user_id = auth?.user?.id || null;
 
   const [contactStatus, setContactStatus] = useState(null);
@@ -171,7 +188,6 @@ export default function Analisys({ auth }) {
       className="min-h-screen p-6 space-y-8"
       style={{ backgroundColor: '#325700', color: 'white' }}
     >
-      {/* Judul dan Tombol Kembali */}
       <BackHeader onBack={handleBack} title="Analisis Potensi Tanaman" />
 
       {/* Layout 2 kolom */}

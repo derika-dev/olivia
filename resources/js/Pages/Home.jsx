@@ -45,7 +45,7 @@ export default function Home({ auth }) {
   };
 
   return (
-    <div className="font-poppins">
+    <div className="font-poppins pt-[80px]">
       {/* Navbar menerima prop auth */}
       <Navbar auth={auth} />
 
