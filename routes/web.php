@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PlantRecomendation\GetPlantRecomendationController;
 use App\Http\Controllers\Message\SendMessageController;
 
-Route::get('/', function () {
+Route::get('', function () {
     return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -17,11 +17,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->middleware(['auth', 'verified'])->name('home');
-
 
 Route::get('/analisis-potensi-tanaman', function () {
     return Inertia::render('Analisys'); 
