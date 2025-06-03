@@ -18,11 +18,6 @@ Route::get('', function () {
     ]);
 });
 
-Route::get('', function () {
-    return Inertia::render('Home');
-})->middleware(['auth', 'verified'])->name('home');
-
-
 Route::get('/analisis-potensi-tanaman', function () {
     return Inertia::render('Analisys'); 
 })->middleware(['auth', 'verified'])->name('analisis.potensi');

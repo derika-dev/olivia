@@ -40,10 +40,10 @@ export default function Sidebar({ active }) {
       {/* Sidebar Utama */}
       <div
         className={`
-          fixed md:static top-0 left-0 z-50 w-72 bg-[#2B5400] text-white font-livvic px-6 py-8 
-          h-screen overflow-y-auto
-          transform transition-transform duration-300 
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
+          fixed md:static top-0 left-0 z-50 w-72 bg-[#2B5400] text-white font-livvic px-6 py-8
+          h-screen min-h-screen overflow-y-auto
+          transform transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0 flex flex-col justify-between
         `}
       >
