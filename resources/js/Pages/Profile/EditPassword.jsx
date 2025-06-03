@@ -16,10 +16,8 @@ export default function EditPassword({ auth }) {
                         <h1 className="text-3xl font-livvic font-bold text-[#2B5400]">Ubah Password</h1>
 
                         <ProfileCard
-                            title="Ubah Password"
                             image={false}
                         >
-                            {/* Gunakan max-w-full agar input 100% mengikuti card */}
                             <div className="w-full">
                                 <UpdatePasswordForm />
                             </div>
