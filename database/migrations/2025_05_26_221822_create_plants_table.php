@@ -20,6 +20,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->text('benefits')->nullable();
             $table->text('planting_tips')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }

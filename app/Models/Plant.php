@@ -12,15 +12,11 @@ class Plant extends Model
         'plant_recomendation_id',
         'benefits',
         'planting_tips',
+        'image',
     ];
 
     public function plantRecomendation()
     {
         return $this->belongsTo(PlantRecomendation::class);
-    }
-
-    public function plantPotensionProvinces()
-    {
-        return $this->hasMany(PlantPotensionProvice::class);
     }
 }
