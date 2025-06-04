@@ -128,7 +128,7 @@ export default function Login({ status, canResetPassword }) {
                     {/* Bagian Gambar */}
                     <div className="hidden md:block md:w-1/2 max-h-full">
                         <img
-                            src="/images/image-login.png"
+                            src="/images/foto-login.png"
                             alt="Sawit"
                             className="h-full w-full object-cover"
                         />
