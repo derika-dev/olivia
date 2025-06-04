@@ -9,9 +9,7 @@ export default function ProfileCard({ title, children, image }) {
                     src="Images/petani vector.png"
                     alt="Petani"
                     className="absolute right-4 h-auto object-contain hide-petani-xs"
-                    style={{ bottom: '215px',
-                             width: '200px'
-                     }}
+                    style={{ bottom: '215px', width: '200px' }}
                 />
             )}
         </div>

@@ -44,6 +44,7 @@ Route::get('/prediksi-musim-tanam', function () {
 Route::middleware('auth')->group(function () {
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile', [ProfileController::class, 'update']); 
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 // Route untuk halaman ubah password (Keamanan)
@@ -78,6 +79,10 @@ Route::post('/analyze', [GetPlantRecomendationController::class, 'store'])->name
 Route::get('/peta-komoditas-pertanian', function () {
     return Inertia::render('KomoditasPertanian');
 })->middleware(['auth', 'verified'])->name('peta-komoditas.pertanian');
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 require __DIR__.'/auth.php';
