@@ -264,7 +264,7 @@ export default function Navbar({ auth }) {
               className="w-10 h-10 rounded-full overflow-hidden border-2 border-none"
             >
               <img
-                src={auth.user.photo || '/Images/profile.jpg'}
+                src={auth.user.photo_profile ? `/storage/${auth.user.photo_profile}` : '/images/profile.jpg'}
                 alt="User Profile"
                 className="w-full h-full object-cover"
               />

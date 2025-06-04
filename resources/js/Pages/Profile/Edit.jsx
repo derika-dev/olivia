@@ -5,10 +5,17 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Edit({ auth }) {
     const { flash = {} } = usePage().props;
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const fileInputRef = useRef();
+
     useEffect(() => {
+        console.log('flash.status:', flash.status);
         if (flash.status) {
             setSuccessMessage(flash.status);
-            setTimeout(() => setSuccessMessage(''), 4000);
+            setShowSuccessModal(true);
+            const timer = setTimeout(() => setShowSuccessModal(false), 3000);
+            return () => clearTimeout(timer);
         }
     }, [flash]);
 
@@ -21,21 +28,55 @@ export default function Edit({ auth }) {
     const [preview, setPreview] = useState(
         auth.user.photo_profile ? `/storage/${auth.user.photo_profile}` : '/images/profile.jpg'
     );
-    const [successMessage, setSuccessMessage] = useState('');
-    const fileInputRef = useRef();
 
     const submit = (e) => {
         e.preventDefault();
-        patch(route('profile.update'), {
-            preserveScroll: true,
-            onSuccess: () => {
-                if (data.photo_profile) {
-                    setPreview(URL.createObjectURL(data.photo_profile));
+
+        if (data.photo_profile) {
+            const formData = new FormData();
+            formData.append('name', data.name);
+            formData.append('email', data.email);
+            formData.append('photo_profile', data.photo_profile);
+            formData.append('_method', 'PATCH');
+
+            fetch(route('profile.update'), {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(res => {
+                console.log('Response:', res);
+                return res.json();
+            })
+            .then((json) => {
+                console.log('JSON:', json);
+                setPreview(URL.createObjectURL(data.photo_profile));
+                setData('photo_profile', null);
+                reset('photo_profile');
+                setShowSuccessModal(true);
+                setTimeout(() => setShowSuccessModal(false), 3000);
+            })
+            .catch(err => {
+                console.error('Error saat submit:', err);
+            });
+        } else {
+            patch(route('profile.update'), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    console.log('PATCH success');
                     setData('photo_profile', null);
                     reset('photo_profile');
+                    setShowSuccessModal(true);
+                    setTimeout(() => setShowSuccessModal(false), 3000);
+                },
+                onError: (err) => {
+                    console.error('PATCH error:', err);
                 }
-            },
-        });
+            });
+        }
     };
 
     const handlePhotoChange = (e) => {
@@ -140,6 +181,27 @@ export default function Edit({ auth }) {
                     </div>
                 </main>
             </div>
+
+            {showSuccessModal && (
+                <div
+                    className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30"
+                    onClick={() => setShowSuccessModal(false)}
+                >
+                    <div
+                        className="bg-[#325700] border border-green-300 rounded-lg p-6 shadow-lg text-center"
+                        onClick={e => e.stopPropagation()} 
+                    >
+                        <div className="text-[#FFF264] text-lg font-bold mb-2">Profil berhasil diperbarui!</div>
+                        <button
+                            type="button"
+                            className="mt-2 px-4 py-2 bg-[#FFF264] text-[#2B5400] font-bold rounded hover:bg-yellow-300 transition"
+                            onClick={() => setShowSuccessModal(false)}
+                        >
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

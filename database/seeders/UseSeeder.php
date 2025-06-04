@@ -17,7 +17,10 @@ class UseSeeder extends Seeder
         User::create([
             'name' => 'User',
             'email' => 'user@gmail.com',
+            'email_verified_at' => now(), // <-- ini benar!
             'password' => Hash::make('12345678'),
         ]);
+
+        
     }
 }

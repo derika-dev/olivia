@@ -63,6 +63,67 @@ class GetPlantRecomendationController extends Controller
                     }
                 }
 
+                // Daftar tanaman dan file gambar sesuai urutan abjad/angka
+                $plantImageMap = [
+                    'adzukibeans'    => '1.png',
+                    'apple'          => '2.png',
+                    'arugula'        => '3.png',
+                    'asparagus'      => '4.png',
+                    'banana'         => '5.png',
+                    'beet'           => '6.png',
+                    'blackgram'      => '7.png',
+                    'broccoli'       => '8.png',
+                    'cabbage'        => '9.png',
+                    'cauliflowers'   => '10.png',
+                    'chard'          => '11.png',
+                    'chickpea'       => '12.png',
+                    'chillipeppers'  => '13.png',
+                    'coconut'        => '14.png',
+                    'coffee'         => '15.png',
+                    'cotton'         => '16.png',
+                    'cress'          => '17.png',
+                    'cucumbers'      => '18.png',
+                    'eggplants'      => '19.png',
+                    'endive'         => '20.png',
+                    'grapes'         => '21.png',
+                    'greenpeas'      => '22.png',
+                    'groundnut'      => '23.png',
+                    'jute'           => '24.png',
+                    'kale'           => '25.png',
+                    'kidneybeans'    => '26.png',
+                    'lentil'         => '27.png',
+                    'lettuce'        => '28.png',
+                    'maize'          => '29.png',
+                    'mango'          => '30.png',
+                    'millet'         => '31.png',
+                    'mothbeans'      => '32.png',
+                    'mungbean'       => '33.png',
+                    'muskmelon'      => '34.png',
+                    'orange'         => '35.png',
+                    'papaya'         => '36.png',
+                    'peas'           => '37.png',
+                    'pigeonpeas'     => '38.png',
+                    'pomegranate'    => '39.png',
+                    'potatoes'       => '40.png',
+                    'radicchio'      => '41.png',
+                    'rice'           => '42.png',
+                    'rubber'         => '43.png',
+                    'spinach'        => '44.png',
+                    'strawberry'     => '45.png',
+                    'sugarcane'      => '46.png',
+                    'tea'            => '47.png',
+                    'tobacco'        => '48.png',
+                    'tomatoes'       => '49.png',
+                    'watermelon'     => '50.png',
+                    'wheat'          => '51.png',
+                ];
+
+                foreach ($plants as &$plant) {
+                    $plantName = strtolower(str_replace(' ', '', $plant['name'] ?? ''));
+                    $imageFile = $plantImageMap[$plantName] ?? null;
+                    $plant['image'] = $imageFile ? asset('plant/' . $imageFile) : null;
+                }
+
                 $responseData = [
                     'soil' => [
                         'type' => $data['Class_Name'] ?? null,
@@ -113,6 +174,9 @@ class GetPlantRecomendationController extends Controller
                             if (isset($plantData['Nama Tanaman'], $plantData['Manfaat'], $plantData['Tips Menanam'])) {
                                 $name = $plantData['Nama Tanaman'];
                                 $accuracy = $recommendationMap[$name] ?? 0.00;
+                                $plantNameKey = strtolower(str_replace(' ', '', $name));
+                                $imageFile = $plantImageMap[$plantNameKey] ?? null;
+                                $imageUrl = $imageFile ? asset('plant/' . $imageFile) : null;
 
                                 $plant = \App\Models\Plant::create([
                                     'name' => $name,
@@ -120,6 +184,7 @@ class GetPlantRecomendationController extends Controller
                                     'plant_recomendation_id' => $plantRecomendation->id,
                                     'benefits' => $plantData['Manfaat'],
                                     'planting_tips' => $plantData['Tips Menanam'],
+                                    'image' => $imageUrl, // simpan path relatif di DB
                                 ]);
                                 Log::info('Plant data saved', ['plant_id' => $plant->id]);
                             }
