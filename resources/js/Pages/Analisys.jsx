@@ -163,7 +163,7 @@ export default function Analisys({ auth }) {
     formData.append('latitude', coords[0]);
     formData.append('longitude', coords[1]);
     formData.append('image', file);
-    if (user_id) formData.append('user_id', user_id); // tambahkan user_id jika ada
+    if (user_id) formData.append('user_id', user_id); 
 
     try {
       const response = await fetch('/api/plant_recomendation/analyze', {
