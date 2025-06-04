@@ -55,7 +55,7 @@ export default function RiwayatAnalisis({ histories = [] }) {
                       <td className="px-4 py-2">
                         {item.created_at ? format(new Date(item.created_at), 'dd/MM/yyyy HH:mm') : '-'}
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 max-w-[160px] block truncate">
                         {item.soil?.location || '-'}
                       </td>
                       <td className="px-4 py-2 space-x-2">
@@ -88,13 +88,13 @@ export default function RiwayatAnalisis({ histories = [] }) {
 
         {showModal && selectedResult && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 px-2">
-            <div className="bg-[#2B4F00] rounded-[24px] px-4 py-6 md:px-6 md:py-8 w-full max-w-md md:max-w-lg text-white shadow-lg relative">
+            <div className="bg-[#2B4F00] rounded-[24px] px-4 py-6 md:px-6 md:py-8 w-full max-w-md md:max-w-lg text-white shadow-lg relative flex flex-col">
               <h2 className="text-lg md:text-xl font-livvic text-[#F8E559] font-bold mb-4 text-center">Detail Hasil Analisis</h2>
               <div className="space-y-3 font-livvic text-base">
                 <div className="flex">
                   <span className="w-32 text-[#F8E559] font-bold">Lokasi</span>
                   <span className="mx-1">:</span>
-                  <span className="flex-1">
+                  <span className="flex-1 min-w-0 break-words">
                     {selectedResult.soil?.location || selectedResult.location || '-'}
                   </span>
                 </div>
