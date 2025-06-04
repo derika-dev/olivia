@@ -121,7 +121,7 @@ class GetPlantRecomendationController extends Controller
                 foreach ($plants as &$plant) {
                     $plantName = strtolower(str_replace(' ', '', $plant['name'] ?? ''));
                     $imageFile = $plantImageMap[$plantName] ?? null;
-                    $plant['image'] = $imageFile ? asset('storage/plant/' . $imageFile) : null;
+                    $plant['image'] = $imageFile ? asset('plant/' . $imageFile) : null;
                 }
 
                 $responseData = [
@@ -176,7 +176,7 @@ class GetPlantRecomendationController extends Controller
                                 $accuracy = $recommendationMap[$name] ?? 0.00;
                                 $plantNameKey = strtolower(str_replace(' ', '', $name));
                                 $imageFile = $plantImageMap[$plantNameKey] ?? null;
-                                $imageUrl = $imageFile ? 'plant/' . $imageFile : null;
+                                $imageUrl = $imageFile ? asset('plant/' . $imageFile) : null;
 
                                 $plant = \App\Models\Plant::create([
                                     'name' => $name,
