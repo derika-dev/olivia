@@ -1,0 +1,28 @@
+.leaflet-map {
+  height: 500px;
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 9999px;
+  border: 1px solid #ccc;
+  background-color: white;
+  outline: none;
+  width: 260px;
+  transition: box-shadow 0.2s;
+  color: black;
+}
+
+.search-bar:focus {
+  box-shadow: 0 0 0 3px rgba(50, 87, 0, 0.3);
+}
+
+@media screen and (max-width: 640px) {
+  .search-bar {
+    width: 100%;
+  }
+}

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Weather;
 
 class PlantRecomendation extends Model
 {
@@ -10,7 +11,7 @@ class PlantRecomendation extends Model
         'user_id',
     ];
 
-    public function soils()
+    public function soil()
     {
         return $this->hasOne(Soil::class);
     }
@@ -18,5 +19,10 @@ class PlantRecomendation extends Model
     public function plants()
     {
         return $this->hasMany(Plant::class);
+    }
+
+    public function weather()
+    {
+        return $this->hasOne(Weather::class);
     }
 }

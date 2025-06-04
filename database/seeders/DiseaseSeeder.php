@@ -40,6 +40,21 @@ class DiseaseSeeder extends Seeder
                 'treatment' => 'Jaga sanitasi lahan, buang daun terinfeksi, semprot fungisida seperti mancozeb bila perlu.'
             ],
             [
+                'name' => 'Narrow Brown Leaf Spot',
+                'description' => 'Bercak sempit dan memanjang berwarna coklat pada daun. Dapat menurunkan hasil panen jika parah.',
+                'treatment' => 'Gunakan varietas tahan, jaga kondisi drainase, dan semprot fungisida jika diperlukan.'
+            ],
+            [
+                'name' => 'Neck_Blast',
+                'description' => 'Infeksi pada leher malai yang menyebabkan bulir tidak terbentuk. Bentuk lanjut dari Leaf Blast.',
+                'treatment' => 'Gunakan varietas tahan blas, hindari pemupukan nitrogen berlebihan, semprot fungisida sistemik seperti tricyclazole.'
+            ],
+            [
+                'name' => 'Rice Hispa',
+                'description' => 'Serangan hama kumbang kecil yang menyebabkan daun tampak seperti kerangka karena jaringannya dimakan.',
+                'treatment' => 'Kendalikan dengan insektisida seperti carbaryl, jaga rotasi tanaman dan pengamatan rutin.'
+            ],
+            [
                 'name' => 'Sheath Blight',
                 'description' => 'Lesi memanjang pada pelepah dan batang bawah. Disebabkan oleh jamur Rhizoctonia solani.',
                 'treatment' => 'Gunakan varietas toleran, jaga jarak tanam, semprot fungisida validamycin atau hexaconazole.'
@@ -50,4 +65,5 @@ class DiseaseSeeder extends Seeder
             Diseases::create($disease);
         }
     }
+
 }

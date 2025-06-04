@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Disease;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Diseases;
 
 class ResultDiseaseController extends Controller
@@ -32,10 +33,12 @@ class ResultDiseaseController extends Controller
 
                 // Simpan ke result_diseases jika ada user_id dan disease ditemukan
                 if ($request->user_id && $disease) {
+                    $image = $request->file('image')->store('disease_images', 'public');
                     \App\Models\ResultDisease::create([
                         'user_id' => $request->user_id,
                         'disease_id' => $disease->id,
                         'accuracy' => $data['confidence'] ?? null,
+                        'image_path' => $image,
                     ]);
                 }
 
@@ -51,5 +54,29 @@ class ResultDiseaseController extends Controller
         } else {
             return response()->json(['error' => 'Failed to analyze image'], 500);
         }
+    }
+
+    public function index()
+    {
+        $userId = auth()->id(); 
+        $histories = \App\Models\ResultDisease::with('disease')
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return inertia('RiwayatDeteksi', [
+            'histories' => $histories
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $result = \App\Models\ResultDisease::where('user_id', auth()->id())->findOrFail($id);
+        if ($result->image_path && Storage::disk('public')->exists($result->image_path)) {
+            Storage::disk('public')->delete($result->image_path);
+        }
+        $result->delete();
+
+        return redirect()->back()->with('success', 'Riwayat deteksi berhasil dihapus.');
     }
 }

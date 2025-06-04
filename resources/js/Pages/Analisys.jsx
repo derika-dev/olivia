@@ -4,11 +4,12 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 import BackHeader from '@/Components/BackHeader';
+import FileInputBox from '@/Components/FileInputBox';
 import FileUploadBox from '@/Components/FileUploadBox';
 import DraggableMarker from '@/Components/DraggableMarker';
 
@@ -74,6 +75,23 @@ export default function Analisys({ auth }) {
     return () => clearTimeout(debounceRef.current);
   }, [location]);
 
+  // Ambil lokasi pengguna saat pertama kali komponen dimount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setCoords([latitude, longitude]);
+          // Dapatkan alamat dari koordinat
+          const address = await reverseGeocode(latitude, longitude);
+          setLocation(address);
+        },
+        (error) => {
+        }
+      );
+    }
+  }, []);
+
   const user_id = auth?.user?.id || null;
 
   const [contactStatus, setContactStatus] = useState(null);
@@ -131,14 +149,6 @@ export default function Analisys({ auth }) {
     }
   };
 
-  const handleFileChange = (e) => {
-    const uploadedFile = e.target.files[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setPreviewUrl(URL.createObjectURL(uploadedFile));
-    }
-  };
-
   const handleAnalyze = async () => {
     if (!location || !file) {
       alert('Lokasi dan foto tanah harus diisi.');
@@ -153,7 +163,7 @@ export default function Analisys({ auth }) {
     formData.append('latitude', coords[0]);
     formData.append('longitude', coords[1]);
     formData.append('image', file);
-    if (user_id) formData.append('user_id', user_id); // tambahkan user_id jika ada
+    if (user_id) formData.append('user_id', user_id); 
 
     try {
       const response = await fetch('/api/plant_recomendation/analyze', {
@@ -178,7 +188,6 @@ export default function Analisys({ auth }) {
       className="min-h-screen p-6 space-y-8"
       style={{ backgroundColor: '#325700', color: 'white' }}
     >
-      {/* Judul dan Tombol Kembali */}
       <BackHeader onBack={handleBack} title="Analisis Potensi Tanaman" />
 
       {/* Layout 2 kolom */}
@@ -212,12 +221,16 @@ export default function Analisys({ auth }) {
         </div>
 
         {/* Kanan: Upload Gambar */}
-        <div className="flex-1 p-0 font-poppins mb-8 bg-transparent flex flex-col justify-between">
+        <div className="flex-1 p-0 font-poppins mb-0 bg-transparent flex flex-col justify-between">
           <Label className="text-white font-livvic font-bold text-lg">Foto Lahan</Label>
-          <FileUploadBox
+          <FileInputBox
             file={file}
             setFile={setFile}
+            setPreviewUrl={setPreviewUrl}
+          />
+          <FileUploadBox
             previewUrl={previewUrl}
+            setFile={setFile}
             setPreviewUrl={setPreviewUrl}
           />
         </div>
@@ -238,7 +251,7 @@ export default function Analisys({ auth }) {
       {error && <p className="text-red-400 mt-2 text-center">{error}</p>}
 
       {/* Hasil Analisis */}
-      {analysisResult && <div className="mt-8"><AnalysisResult result={analysisResult} /></div>}
+      {analysisResult && <div className="mt-2"><AnalysisResult result={analysisResult} /></div>}
     </div>
   );
 }

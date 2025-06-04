@@ -12,6 +12,7 @@ class Plant extends Model
         'plant_recomendation_id',
         'benefits',
         'planting_tips',
+        'image',
     ];
 
     public function plantRecomendation()

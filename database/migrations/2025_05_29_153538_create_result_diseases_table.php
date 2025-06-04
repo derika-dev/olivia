@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('disease_id')
                 ->constrained('diseases')
                 ->onDelete('cascade');
+            $table->string('image_path')->nullable(); // Path ke gambar yang dianalisis
             $table->float('accuracy')->default(0.00); // Akurasi penyakit
             $table->timestamps();
         });

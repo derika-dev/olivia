@@ -14,8 +14,8 @@ class ResultDisease extends Model
     protected $fillable = [
         'user_id',
         'disease_id',
+        'image_path', 
         'accuracy',
-        
     ];
 
     /**

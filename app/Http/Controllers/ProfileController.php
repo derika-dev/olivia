@@ -2,62 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
+    public function edit()
     {
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
+            'auth' => [
+                'user' => Auth::user()
+            ],
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $user = Auth::user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if (!($user instanceof \App\Models\User)) {
+            $user = \App\Models\User::find($user->id);
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user = $request->user();
+        if ($request->hasFile('photo_profile')) {
+            // Hapus foto lama jika ada
+            if ($user->photo_profile && Storage::exists('public/' . $user->photo_profile)) {
+                Storage::delete('public/' . $user->photo_profile);
+            }
 
-        Auth::logout();
+            // Simpan foto baru
+            $file = $request->file('photo_profile');
+            $path = $file->store('photo_profile', 'public');
+            $validated['photo_profile'] = $path;
+        }
 
-        $user->delete();
+        $user->update($validated);
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect()->route('profile.edit')->with('status', 'Profil berhasil diperbarui!');
     }
 }

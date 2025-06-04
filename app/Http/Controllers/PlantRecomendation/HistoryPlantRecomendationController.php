@@ -16,10 +16,14 @@ class HistoryPlantRecomendationController extends Controller
 
         // Get the authenticated user's plant recommendations
         $plantRecommendations = $request->user()->plantRecomendations()
-            ->with(['soils', 'plants'])
+            ->with(['soil', 'plants', 'weather'])
+            ->orderByDesc('created_at')
             ->get();
 
-        return response()->json($plantRecommendations);
+        // Kembalikan sebagai halaman Inertia, bukan JSON
+        return inertia('RiwayatAnalisis', [
+            'histories' => $plantRecommendations
+        ]);
     }
     public function show(Request $request, $id)
     {

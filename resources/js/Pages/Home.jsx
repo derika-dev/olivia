@@ -45,7 +45,7 @@ export default function Home({ auth }) {
   };
 
   return (
-    <div className="font-poppins">
+    <div className="font-poppins pt-[80px]">
       {/* Navbar menerima prop auth */}
       <Navbar auth={auth} />
 
@@ -131,9 +131,9 @@ export default function Home({ auth }) {
           link: '/analisis-penyakit-tanaman',
         },
         {
-          title: 'Prediksi Musim Tanam & Panen',
+          title: 'Peta Komoditas Pertanian',
           image: '/images/fitur3.png',
-          link: '/prediksi-musim-tanam',
+          link: '/peta-komoditas-pertanian',
         },
       ].map((f, i) => (
         <div
