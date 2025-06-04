@@ -226,7 +226,7 @@ const KomoditasPertanian = () => {
                     <span className="font-semibold">Komoditas & Area:</span>
                     <ul className="list-disc ml-4">
                       {markers.filter(m => m.daerah === lokasi.daerah && m.year === lokasi.year).map((m, i) => (
-                        <li key={i}>{m.komoditas} : {m.area}</li>
+                        <li key={i}>{m.komoditas} : {m.area} ha</li>
                       ))}
                     </ul>
                     {lokasi.soil_image && (

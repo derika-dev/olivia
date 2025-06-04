@@ -34,7 +34,7 @@ export default function RiwayatDeteksi({ histories = [] }) {
       <Sidebar active="riwayat.deteksi" />
       <div className="flex-1 p-2 md:p-8 bg-[#F7FFE5]">
         <h1 className="text-xl md:text-2xl font-livvic font-bold text-[#2B5400] mb-4 md:mb-8">
-          Riwayat Deteksi Penyakit Tanaman
+          Riwayat Deteksi Penyakit Tanaman Padi
         </h1>
 
         {/* TABEL UTAMA RESPONSIF */}

@@ -147,7 +147,7 @@ export default function Navbar({ auth }) {
               </li>
               <li>
                 <a href="/analisis-penyakit-tanaman" className="block px-4 py-2 hover:bg-gray-100 border-b" style={{ borderColor: '#FFFA72' }}>
-                  Deteksi penyakit tanaman
+                  Deteksi penyakit tanaman Padi
                 </a>
               </li>
               <li>
@@ -213,7 +213,7 @@ export default function Navbar({ auth }) {
                   </li>
                   <li>
                     <a href="/analisis-penyakit-tanaman" className="block py-2" onClick={() => setMobileMenuOpen(false)}>
-                      Deteksi penyakit tanaman
+                      Deteksi penyakit tanaman Padi
                     </a>
                   </li>
                   <li>

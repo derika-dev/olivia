@@ -89,7 +89,7 @@ export default function DeteksiPenyakitTanaman({ auth }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
         <h1 className="font-livvic font-bold text-4xl md:text-[35px] leading-tight text-[#FFFA72]">
-          Deteksi Penyakit Tanaman
+          Deteksi Penyakit Tanaman Padi
         </h1>
       </div>
 

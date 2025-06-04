@@ -53,6 +53,14 @@ export default function Analisys({ auth }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const debounceRef = useRef();
+  const resultRef = useRef(null); // Tambahkan ref untuk hasil
+
+  // Scroll ke hasil analisis saat analysisResult berubah
+  useEffect(() => {
+    if (analysisResult && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [analysisResult]);
 
   // Fungsi pencarian lokasi otomatis saat mengetik
   useEffect(() => {
@@ -183,6 +191,24 @@ export default function Analisys({ auth }) {
     }
   };
 
+  // Komponen loading yang sama seperti di DeteksiPenyakitTanaman
+  const LoadingAnalysis = () => (
+    <div className="flex flex-col items-center justify-center min-h-[300px]">
+      <div className="relative flex items-center justify-center mb-4">
+        <span className="absolute inline-flex h-16 w-16 rounded-full bg-[#FDF76D] opacity-30 animate-ping"></span>
+        <span className="relative rounded-full h-16 w-16 bg-[#FDF76D] flex items-center justify-center">
+          <svg className="w-8 h-8 text-[#325700] animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-30" cx="12" cy="12" r="10" stroke="#325700" strokeWidth="4" />
+            <path className="opacity-80" fill="#325700" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+          </svg>
+        </span>
+      </div>
+      <div className="text-[#FDF76D] text-lg font-semibold font-livvic animate-pulse">
+        Analisis gambar sedang diproses...
+      </div>
+    </div>
+  );
+
   return (
     <div
       className="min-h-screen p-6 space-y-8"
@@ -250,8 +276,15 @@ export default function Analisys({ auth }) {
       {/* Error */}
       {error && <p className="text-red-400 mt-2 text-center">{error}</p>}
 
+      {/* Loading */}
+      {loading && <LoadingAnalysis />}
+
       {/* Hasil Analisis */}
-      {analysisResult && <div className="mt-2"><AnalysisResult result={analysisResult} /></div>}
+      {!loading && analysisResult && (
+        <div className="mt-2" ref={resultRef}>
+          <AnalysisResult result={analysisResult} />
+        </div>
+      )}
     </div>
   );
 }

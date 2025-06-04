@@ -1,0 +1,1 @@
+@include('errors.error', ['code' => 503, 'message' => 'Layanan tidak tersedia.'])

@@ -4,6 +4,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -12,6 +14,9 @@ export default function Register() {
         password: '',
         password_confirmation: '',
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
@@ -68,35 +73,59 @@ export default function Register() {
                                 <InputError message={errors.email} className="mt-2" />
                             </div>
 
-                            <div className="mb-4">
+                            <div className="mb-4 relative">
                                 <InputLabel htmlFor="password" value="Password" />
                                 <TextInput
                                     id="password"
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={data.password}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full pr-10"
                                     autoComplete="new-password"
                                     onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Masukkan password"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    className="absolute right-3 top-9 text-gray-500"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
+                                </button>
                                 <InputError message={errors.password} className="mt-2" />
                             </div>
 
-                            <div className="mb-4">
+                            <div className="mb-4 relative">
                                 <InputLabel htmlFor="password_confirmation" value="Konfirmasi Password" />
                                 <TextInput
                                     id="password_confirmation"
-                                    type="password"
+                                    type={showPasswordConfirm ? "text" : "password"}
                                     name="password_confirmation"
                                     value={data.password_confirmation}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full pr-10"
                                     autoComplete="new-password"
                                     onChange={(e) => setData('password_confirmation', e.target.value)}
                                     placeholder="Ulangi password"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    className="absolute right-3 top-9 text-gray-500"
+                                    onClick={() => setShowPasswordConfirm((v) => !v)}
+                                >
+                                    {showPasswordConfirm ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
+                                </button>
                                 <InputError message={errors.password_confirmation} className="mt-2" />
                             </div>
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Checkbox from '@/Components/Checkbox';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -12,6 +13,8 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
@@ -58,18 +61,30 @@ export default function Login({ status, canResetPassword }) {
                                 <InputError message={errors.email} className="mt-2" />
                             </div>
 
-                            <div className="mb-4">
+                            <div className="mb-4 relative">
                                 <InputLabel htmlFor="password" value="Password" />
                                 <TextInput
                                     id="password"
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={data.password}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full pr-10"
                                     autoComplete="current-password"
                                     onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Masukkan password"
                                 />
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    className="absolute right-3 top-9 text-gray-500"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
+                                </button>
                                 <InputError message={errors.password} className="mt-2" />
                             </div>
 
